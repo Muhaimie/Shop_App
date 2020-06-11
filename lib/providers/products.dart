@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import './product.dart';
 
-
-class Products with ChangeNotifier{
-
+class Products with ChangeNotifier {
   final List<Product> _items = [
     Product(
       id: 'p1',
@@ -40,26 +38,41 @@ class Products with ChangeNotifier{
     ),
   ];
 
-
-  List<Product> get items{
-    
+  List<Product> get items {
     return [..._items];
   }
 
-  List<Product> get onlyFavItems{
+  List<Product> get onlyFavItems {
     return _items.where((element) => element.isFavourite).toList();
   }
 
-  Product findById(String id){
+  Product findById(String id) {
     return _items.firstWhere((element) => element.id == id);
   }
 
+  void addProduct(Product product) {
+    final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: DateTime.now().toString());
+    _items.add(newProduct);
 
-
-  void addProduct(){
-    //_items.add(value)
     notifyListeners();
   }
 
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((element) => element.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      print("objectsssssss");
+      notifyListeners();
+    }
+  }
 
+  void deleteProduct(String id){
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
 }
